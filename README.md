@@ -1,39 +1,83 @@
-# 🎤 Speech-to-Text (STT) using ElevenLabs + Python
+# 🔊 ElevenLabs TTS + STT Python Project
 
-This project records audio from your microphone, saves it as a WAV file,
-and sends it to ElevenLabs' Speech-to-Text API for transcription.
+This project demonstrates **both Text-to-Speech (TTS)** and
+**Speech-to-Text (STT)** using the ElevenLabs Python SDK.\
+It includes:
+
+-   🎤 **Record audio** and convert speech → text\
+-   🗣️ **Convert text → natural AI voice**\
+-   💾 Save audio files\
+-   ⚙️ Clean, modular Python code
+
+------------------------------------------------------------------------
 
 ## 🚀 Features
 
--   Record audio using your microphone\
--   Save audio as `.wav`\
--   Convert speech → text using **ElevenLabs Scribe v2**\
--   Simple & clean Python code\
--   Works in Windows, Mac, Linux
+### ✅ Speech-to-Text (STT)
 
-## 📦 Installation
+-   Records 5 seconds of audio\
+-   Saves to `record.wav`\
+-   Converts speech → text using **scribe_v2**
 
-### 1️⃣ Install dependencies
+### ✅ Text-to-Speech (TTS)
+
+-   Converts user text to audio\
+-   Uses **eleven_multilingual_v2**\
+-   Saves output as `output.wav`\
+-   Optional playback using FFmpeg
+
+------------------------------------------------------------------------
+
+# 📂 Project Structure (Recommended)
+
+    freelance/
+    │
+    ├── main.py
+    ├── src/
+    │   ├── models/
+    │   │     ├── STT.py
+    │   │     ├── TTS.py
+    │   │     └── config.py
+    │   └── utils/
+    │
+    └── README.md
+
+------------------------------------------------------------------------
+
+# 📦 Installation
+
+### 1️⃣ Install Python dependencies
 
 ``` bash
-uv pip install sounddevice scipy elevenlabs
+uv pip install elevenlabs sounddevice scipy python-dotenv
 ```
 
-You also need FFmpeg:\
-Windows: https://www.gyan.dev/ffmpeg/builds/\
-Add FFmpeg to PATH: `C:\ffmpeg\bin`
+### 2️⃣ Install FFmpeg (Required for audio playback)
 
-## 🔑 Set Your ElevenLabs API Key
+Download Windows build:\
+https://www.gyan.dev/ffmpeg/builds/
 
-Edit `STT.py`:
+Add to PATH:
+
+    C:\ffmpeg\bin
+
+------------------------------------------------------------------------
+
+# 🔑 Environment Setup
+
+Create a `.env` file:
+
+    ELEVENLABS_API_KEY=YOUR_API_KEY_HERE
+
+Or hardcode in code:
 
 ``` python
 client = ElevenLabs(api_key="YOUR_API_KEY_HERE")
 ```
 
-Or use `.env`.
+------------------------------------------------------------------------
 
-## 📝 STT Code
+# 🎤 Speech-to-Text (STT) Code
 
 ``` python
 import sounddevice as sd
@@ -61,12 +105,69 @@ print("\nYou said:")
 print(transcription.text)
 ```
 
-## ▶️ Run
+------------------------------------------------------------------------
 
-``` bash
-uv run STT.py
+# 🗣️ Text-to-Speech (TTS) Code
+
+``` python
+from elevenlabs import ElevenLabs, play
+
+client = ElevenLabs(api_key="YOUR_API_KEY_HERE")
+
+text = "Hello! This is an ElevenLabs test."
+
+audio = client.text_to_speech.convert(
+    text=text,
+    voice_id="pNInz6obpgDQGcFmaJgB",  # Example voice ID
+    model_id="eleven_multilingual_v2"
+)
+
+# Save audio
+with open("output.wav", "wb") as f:
+    for chunk in audio:
+        f.write(chunk)
+
+print("Saved as output.wav")
 ```
 
-## ⭐ License
+------------------------------------------------------------------------
 
-Free for personal and freelance use.
+# ▶️ How to Run
+
+### Run Speech-to-Text:
+
+``` bash
+uv run src/models/STT.py
+```
+
+### Run Text-to-Speech:
+
+``` bash
+uv run src/models/TTS.py
+```
+
+------------------------------------------------------------------------
+
+# ⭐ Tips
+
+-   STT model → `scribe_v2`\
+-   TTS model → `eleven_multilingual_v2`\
+-   Replace voice_id with any voice from your ElevenLabs dashboard\
+-   Works best with FFmpeg installed
+
+------------------------------------------------------------------------
+
+# 📞 Support
+
+If you need: - A fully structured project\
+- Combined TTS + STT chatbot\
+- Frontend UI\
+- Packaging into EXE
+
+Just ask!
+
+------------------------------------------------------------------------
+
+# 📜 License
+
+Free to use for personal and freelance projects.
