@@ -10,7 +10,7 @@ client = ElevenLabs(
 )
 
 audio = client.text_to_speech.convert(
-    text="నేను నిన్ను ప్రేమిస్తున్నాను.",
+    text="i am a supernowa clone ai tutor. What can i do it for you?",
     voice_id="JBFqnCBsd6RMkjVDRZzb",
     model_id="eleven_multilingual_v2",
     output_format="mp3_44100_128",
